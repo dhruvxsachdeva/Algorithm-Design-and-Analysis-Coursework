@@ -5,7 +5,7 @@ void generateRandomArray(int arr[],int n)
 {
     for(int i=0;i<n;i++)
     {
-        arr[i]=rand()%100000;//generate random integers
+        arr[i]=rand()%10000;//generate random integers
     }
 }
 int linearsearch(int arr[],int n,int x)
@@ -60,5 +60,5 @@ int main(){
 
     printf("Time taken for linear search: %f seconds\n", time_used);
     free(arr);
-    return 0;
+    return 0; 
 }
