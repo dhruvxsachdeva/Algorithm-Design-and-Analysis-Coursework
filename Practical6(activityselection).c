@@ -20,8 +20,7 @@ void sortActivities(Activity activities[], int n) {
     }
 }
 
-// Function to perform activity selection using the Greedy method
-void activitySelection(Activity activities[], int n) {
+void asp(Activity activities[], int n) {
     int i, j;
 
     printf("Following activities are selected:\n");
@@ -39,6 +38,18 @@ void activitySelection(Activity activities[], int n) {
         }
     }
 }
+void rec_asp(Activity activities[], int i, int n) {
+    int m = i + 1;
+
+    // Find the next activity that starts after or at finish of current one
+    while (m < n && activities[m].start < activities[i].finish)
+        m++;
+
+    if (m < n) {
+        printf("Activity %d (Start: %d, Finish: %d)\n", m + 1, activities[m].start, activities[m].finish);
+        rec_asp(activities, m, n);
+    }
+}
 
 int main() {
     int n, i;
@@ -46,21 +57,33 @@ int main() {
     printf("Enter the number of activities: ");
     scanf("%d", &n);
 
-    Activity activities[n];
+    Activity activities[n + 1]; // +1 for dummy activity
+
+    // Dummy activity
+    activities[0].start = 0;
+    activities[0].finish = 0;
 
     printf("Enter start and finish times of each activity:\n");
-    for (i = 0; i < n; i++) {
-        printf("Activity %d Start Time: ", i + 1);
+    for (i = 1; i <= n; i++) {
+        printf("Activity %d Start Time: ", i);
         scanf("%d", &activities[i].start);
-        printf("Activity %d Finish Time: ", i + 1);
+        printf("Activity %d Finish Time: ", i);
         scanf("%d", &activities[i].finish);
+
+        if (activities[i].start > activities[i].finish) {
+            printf("Invalid time entry for Activity %d! Exiting.\n", i);
+            return 1;
+        }
     }
 
-    
-    sortActivities(activities, n);
+    sortActivities(activities + 1, n);
 
-   
-    activitySelection(activities, n);
+    asp(activities + 1, n);
+
+    printf("\nRecursive Activity Selection:\n");
+    rec_asp(activities, 0, n + 1);
 
     return 0;
 }
+
+
